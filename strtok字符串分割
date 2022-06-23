@@ -1,1 +1,22 @@
+#include <string.h>
+
+//非线程安全函数
+char *strtok(char *str, const char *delim);
+
+//线程安全函数
+char *strtok_r(char *str, const char *delim, char **saveptr);
+
+char *str[] = {"0x01,0x02,0x03"};
+char *saveptr = nullptr, *subtoken = nullptr;
+/* 分割字符串，取出实际值 */
+for(;;str = nullptr) //str = nullptr的原因是，第一次循环时strtok_r的第一个参数要指向str，第二次循环需要指向NULL，如果不指向NULL，会变成死循环。
+{
+    subtoken = strtok_r(str, ",", &saveptr); //saveptr保存剩余字符串的值。
+    if (nullptr == subtoken)
+    {
+        break;
+    }
+}
+
+注意：strtok_r会修改源字符串的值，如果源字符串不想被更改，则需要使用一个临时的值
 
